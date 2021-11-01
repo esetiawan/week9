@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MyFragmentNavigation</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="data_major">
+        <item>Computational Intelligence</item>
+        <item>Internet Technology</item>
+        <item>Software Technology</item>
+    </string-array>
+</resources>
