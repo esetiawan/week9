@@ -1,12 +1,22 @@
-package id.ac.week9;
+package id.ac.week10;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName="mhs")
 public class Mahasiswa implements Parcelable {
+    @PrimaryKey
+    @ColumnInfo(name="mhs_nrp")
     private int nrp;
+    @ColumnInfo(name="mhs_name")
     private String name;
+    @ColumnInfo(name="mhs_major")
     private String major;
+    @ColumnInfo(name="mhs_gender")
     private String gender;
 
     public int getNrp() {

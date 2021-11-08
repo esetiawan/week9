@@ -1,19 +1,20 @@
-package id.ac.week9;
+package id.ac.week10;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements AddFragment.OnFragmentInteractionListener{
     ArrayList<Mahasiswa> arrdata = new ArrayList<Mahasiswa>();
     BottomNavigationView navigationView;
     @Override
@@ -41,5 +42,13 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onFragmentInteraction(Mahasiswa m) {
+        arrdata.add(m);
+        //Toast.makeText(this,"Activity menerima data mhs",
+        //        Toast.LENGTH_LONG).show();
+        Log.i("INFO","Activity menerima data mhs");
     }
 }

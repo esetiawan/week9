@@ -1,12 +1,21 @@
-package id.ac.week9;
+package id.ac.week10;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.loader.content.AsyncTaskLoader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,6 +24,7 @@ import android.view.ViewGroup;
  */
 public class ListFragment extends Fragment {
 
+    public static final String EXTRA_MHS_LIST = "EXTRA_MHS_LIST";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -24,6 +34,10 @@ public class ListFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    RecyclerView rvMhs;
+    ArrayList<Mahasiswa> arrMhs=new ArrayList<>();
+    AppDatabase db;
+    MahasiswaAdapter adapter;
     public ListFragment() {
         // Required empty public constructor
     }
@@ -60,5 +74,32 @@ public class ListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_list, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        db = AppDatabase.getAppDatabase(getActivity());
+        rvMhs  =  view.findViewById(R.id.recyclerView_mhs);
+        rvMhs.setHasFixedSize(true);
+        rvMhs.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter= new MahasiswaAdapter(arrMhs);
+        rvMhs.setAdapter(adapter);
+        new LoadMahasiswaTask().execute(); //panggil load data Mahasiswa dari database
+    }
+                                                    //input, progress, outout
+    private class LoadMahasiswaTask extends AsyncTask<Void,Void, List<Mahasiswa>> {
+        @Override
+        protected List<Mahasiswa> doInBackground(Void... voids) {
+            return db.mahasiswaDAO().getAllMhs();
+        }
+        @Override
+        protected void onPostExecute(List<Mahasiswa> mahasiswas) { //mahasiswas adalah hasil doInBackground
+            super.onPostExecute(mahasiswas);
+            //selesai load data mahasiswa
+            arrMhs.clear();
+            arrMhs.addAll(mahasiswas);
+            adapter.notifyDataSetChanged();
+        }
     }
 }
